@@ -1,21 +1,45 @@
 package main
 
-func main() {
-	plusOne([]int{9})
+import "fmt"
 
+func main() {
+	permute([]int{1, 2, 3})
+	fmt.Println("111")
 }
 
-func plusOne(digits []int) []int {
-	for i := len(digits) - 1; i >= 0; i-- {
-		if digits[i:][0] != 9 {
-			digits[i:][0] += 1
-			return digits
-		}
-		digits[i:][0] = 0
-		if i == 0 {
-			digits = append([]int{1}, digits...)
-			return digits
-		}
+var res [][]int
+var tmp []int
+
+var lens int
+
+var used []bool
+
+func permute(nums []int) [][]int {
+	lens = len(nums)
+	res = make([][]int, 0)
+	tmp = make([]int, 0)
+	used = make([]bool, lens)
+	backTrack(nums)
+
+	return res
+}
+
+func backTrack(nums []int) {
+	if lens == len(tmp) {
+		target := make([]int, lens)
+		copy(target, tmp)
+		res = append(res, target)
+		return
 	}
-	return digits
+	for i := 0; i < lens; i++ {
+		if used[i] {
+			continue
+		}
+		used[i] = true
+		tmp = append(tmp, nums[i])
+		backTrack(nums)
+		tmp = tmp[:len(tmp)-1]
+		used[i] = false
+
+	}
 }
